@@ -20,6 +20,38 @@ const Register = () => {
     e.preventDefault();
 
     try {
+      if (values.username.length < 4) {
+        setError("Username must be atleast 4 chararacters long");
+        throw new Error("Username must be atleast 4 characters long");
+      }
+      if (values.username.length > 24) {
+        setError("Username is too long");
+        throw new Error("Username is too long");
+      }
+      if (values.username.search(/^[a-z0-9]+$/i) < 0) {
+        setError("Name must contain only alphanumeric characters");
+        throw new Error("Name must contain only alphanumeric characters");
+      }
+      if (values.password.length < 6) {
+        setError("Password must be 6 or more characters");
+        throw new Error("Password must be 6 or more characters");
+      }
+      if (values.password.search(/[a-z]/i) < 0) {
+        setError("Password must contain at least one letter");
+        throw new Error("Password must contain at least one letter");
+      }
+      if (values.password.search(/[0-9]/) < 0) {
+        setError("Password must contain at least one digit");
+        throw new Error("Password must contain at least one digit");
+      }
+
+      const EMAIL_REGEX =
+        /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      if (!EMAIL_REGEX.test(values.email)) {
+        setError("Invalid email");
+        throw new Error("Invalid email");
+      }
+
       if (values.password === values.confirmpw) {
         const res = await createUserWithEmailAndPassword(
           auth,
@@ -34,7 +66,8 @@ const Register = () => {
         });
         navigate("/");
       } else {
-        alert("Passwords do not match");
+        setError("Passwords do not match");
+        throw new Error("Passwords do not match");
       }
     } catch (err) {
       setError(err);
@@ -56,6 +89,7 @@ const Register = () => {
             type="text"
             id="username"
             name="username"
+            maxLength="24"
             required
             autoComplete="off"
           />

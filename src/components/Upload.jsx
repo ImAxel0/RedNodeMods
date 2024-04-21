@@ -53,6 +53,34 @@ const Upload = () => {
     const ZIP_FILE_LIMIT = 25;
 
     try {
+      if (values.name.length < 3) {
+        setError("Mod name must be atleast 3 characters long");
+        throw new Error("Mod name must be atleast 3 characters long");
+      }
+      if (values.name.length > 24) {
+        setError("Mod name is too long");
+        throw new Error("Mod name is too long");
+      }
+      if (values.name.search(/^[a-z0-9]+$/i) < 0) {
+        setError("Mod name must contain only alphanumeric characters");
+        throw new Error("Mod name must contain only alphanumeric characters");
+      }
+      const allowedPattern = /^[a-zA-Z0-9,.¡!¿?$%&()#+;'" _-]+$/;
+      if (!allowedPattern.test(values.name)) {
+        setError(
+          "Mod name must only contain letters, numbers, spaces, dashes and underscores"
+        );
+        throw new Error(
+          "Mod name must only contain letters, numbers, spaces, dashes and underscores"
+        );
+      }
+      if (values.shortDescription.length > 84) {
+        setError("Mod description preview exceed limit of 84 characters");
+        throw new Error(
+          "Mod description preview exceed limit of 84 characters"
+        );
+      }
+
       const thumbExt = values.thumbnail.name.split(".").pop();
       if (thumbExt !== "png" && thumbExt !== "jpg" && thumbExt !== "jpeg") {
         setError("Thumbnail file must be a png or jpg file.");
@@ -121,6 +149,7 @@ const Upload = () => {
             type="text"
             name="name"
             placeholder="Mod name"
+            maxLength="24"
             onChange={handleInput}
             required
           />

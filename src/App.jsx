@@ -15,9 +15,11 @@ import Upload from "./components/Upload";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
 import ProfilePage from "./components/ProfilePage";
+import { UserAuth } from "./context/AuthContext";
 
 function App() {
   const [mods, setMods] = useState([]);
+  const { user } = UserAuth();
 
   useEffect(() => {
     const getMods = async () => {
@@ -47,10 +49,12 @@ function App() {
             element={<ModPage mod={mod} />}
           ></Route>
         ))}
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route path="/upload" element={<Upload />}></Route>
-        <Route path="/profile" element={<ProfilePage mods={mods} />}></Route>
+        {!user && <Route path="/login" element={<Login />}></Route>}
+        {!user && <Route path="/register" element={<Register />}></Route>}
+        {user && <Route path="/upload" element={<Upload />}></Route>}
+        {user && (
+          <Route path="/profile" element={<ProfilePage mods={mods} />}></Route>
+        )}
       </Routes>
       <Footer />
     </div>
