@@ -4,6 +4,11 @@ import { uploadFile } from "../handlers/fileUpload";
 import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
+import {
+  validateModFile,
+  validateShortDescription,
+  validateThumbnail,
+} from "../handlers/modInputValidation";
 
 const Update = ({ mod }) => {
   const { user } = UserAuth();
@@ -49,36 +54,18 @@ const Update = ({ mod }) => {
 
   const onModUpdate = async (e) => {
     e.preventDefault();
-    const THUMBNAIL_SIZE_LIMIT = 2;
-    const ZIP_FILE_LIMIT = 25;
 
     try {
+      const errors = [];
+      errors.push(...validateShortDescription(values.shortDescription));
+      errors.push(...validateModFile(values.modFile));
       if (values.thumbnail) {
-        const thumbExt = values.thumbnail.name.split(".").pop();
-        if (thumbExt !== "png" && thumbExt !== "jpg") {
-          setError("Thumbnail file must be a png or jpg file.");
-          throw new Error("Thumbnail file must be a png or jpg file.");
-        }
-        if (bytesToMB(values.thumbnail.size) > THUMBNAIL_SIZE_LIMIT) {
-          setError(
-            `Thumbnail size exceeds the limit of ${THUMBNAIL_SIZE_LIMIT}MB.`
-          );
-          throw new Error(
-            `Thumbnail size exceeds the limit of ${THUMBNAIL_SIZE_LIMIT}MB.`
-          );
-        }
+        errors.push(...validateThumbnail(values.thumbnail));
       }
 
-      const modExt = values.modFile.name.split(".").pop();
-      if (modExt !== "zip") {
-        setError("Mod file must be a zip file.");
-        throw new Error("Mod file must be a zip file.");
-      }
-      if (bytesToMB(values.modFile.size) > ZIP_FILE_LIMIT) {
-        setError(`Mod file size exceeds the limit of ${ZIP_FILE_LIMIT}MB.`);
-        throw new Error(
-          `Mod file size exceeds the limit of ${ZIP_FILE_LIMIT}MB.`
-        );
+      if (errors.length > 0) {
+        setError(errors[0]);
+        throw new Error(errors[0]);
       }
 
       let date = new Date().toLocaleDateString("it-IT");

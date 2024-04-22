@@ -45,7 +45,7 @@ function App() {
         {mods.map((mod) => (
           <Route
             key={mod.id}
-            path={`/${mod.id}/${mod.name}`}
+            path={`/${mod.id}/${mod.name.toLowerCase()}`}
             element={<ModPage mod={mod} />}
           ></Route>
         ))}

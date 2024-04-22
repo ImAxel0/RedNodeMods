@@ -193,8 +193,8 @@
 
 .mods-grid {
   display: grid;
-  grid-template-columns: repeat(4, auto);
-  justify-content: left;
+  grid-template-columns: repeat(auto-fill, minmax(400px, auto));
+  justify-content: center;
   gap: 20px;
   padding: 0 100px;
 }
@@ -223,7 +223,7 @@
   50% {
     transform: translateX(2px);
   }
-  1000% {
+  100% {
     transform: translateX(0);
   }
 }

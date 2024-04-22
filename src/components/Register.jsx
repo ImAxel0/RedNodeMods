@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import {
   validateEmail,
   validatePassword,
@@ -10,6 +10,7 @@ import {
 } from "../handlers/authInputValidation";
 
 const Register = () => {
+  const [takenUsernames, setTakenUsernames] = useState([]);
   const [error, setError] = useState();
   const [values, setValues] = useState({
     username: "",
@@ -20,10 +21,31 @@ const Register = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const getTakenUsernames = async () => {
+      let list = [];
+      try {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        querySnapshot.forEach((user) => {
+          list.push(user.data().username);
+        });
+        setTakenUsernames(list);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTakenUsernames();
+  }, []);
+
   const onRegistration = async (e) => {
     e.preventDefault();
 
     try {
+      if (takenUsernames.includes(values.username)) {
+        setError("Username already taken");
+        throw new Error("Username already taken");
+      }
+
       const errors = [];
       errors.push(...validateEmail(values.email));
       errors.push(...validateUsername(values.username));
