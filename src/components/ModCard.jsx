@@ -42,15 +42,12 @@ const ModCard = ({ mod }) => {
       </div>
       <div className="mod-card-stats">
         <small>
-          <FontAwesomeIcon
-            transform="shrink-4 down-2"
-            icon="fa-regular fa-clock"
-          />
+          <FontAwesomeIcon transform="shrink-4" icon="fa-regular fa-clock" />
           {mod.uploadDate}
         </small>
         <p>
           <FontAwesomeIcon
-            transform="shrink-4 down-1"
+            transform="shrink-4 down-0.5"
             icon="fa-regular fa-circle-down"
           />
           {mod.downloadCount}

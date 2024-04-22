@@ -28,9 +28,9 @@ const ModPage = ({ mod }) => {
   return (
     <div className="mod-page">
       <h1>
-        {mod.name} by{" "}
-        <span style={{ color: "green" }}>
-          {mod.modAuthor ? mod.modAuthor : user?.username}
+        {mod.name}{" "}
+        <span style={{ color: "green", fontWeight: "500" }}>
+          by {mod.modAuthor ? mod.modAuthor : user?.username}
         </span>{" "}
         {!mod.isApproved && <span style={{ color: "red" }}>(unapproved)</span>}
       </h1>
@@ -57,10 +57,11 @@ const ModPage = ({ mod }) => {
               </button>
             )}
           </div>
-          <p>
+          <br />
+          <small>
             Upload date: {mod.originalUploadDate} | Last update:{" "}
             {mod.uploadDate}
-          </p>
+          </small>
           {showUpdateForm && <Update mod={mod} />}
         </div>
         <div className="mod-description">
