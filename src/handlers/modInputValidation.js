@@ -20,8 +20,20 @@ export function validateModName(name) {
 
 export function validateShortDescription(shortDescription) {
   const errors = [];
+  if (shortDescription.length < 20) {
+    errors.push("Mod description preview must be atleast 20 characters long");
+  }
   if (shortDescription.length > 84) {
     errors.push("Mod description preview exceed limit of 84 characters");
+  }
+  return errors;
+}
+
+export function validateModVersion(modVersion) {
+  const errors = [];
+  const re = /^\d+\.\d+\.\d+$/;
+  if (!re.test(modVersion)) {
+    errors.push("Invalid mod version, should follow n.n.n format");
   }
   return errors;
 }

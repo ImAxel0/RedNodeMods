@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import {
   validateModFile,
+  validateModVersion,
   validateShortDescription,
   validateThumbnail,
 } from "../handlers/modInputValidation";
@@ -57,6 +58,7 @@ const Update = ({ mod }) => {
 
     try {
       const errors = [];
+      errors.push(...validateModVersion(values.modVersion));
       errors.push(...validateShortDescription(values.shortDescription));
       errors.push(...validateModFile(values.modFile));
       if (values.thumbnail) {

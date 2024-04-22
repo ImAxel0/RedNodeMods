@@ -9,6 +9,7 @@ import { uploadFile } from "../handlers/fileUpload";
 import {
   validateModFile,
   validateModName,
+  validateModVersion,
   validateShortDescription,
   validateThumbnail,
 } from "../handlers/modInputValidation";
@@ -56,6 +57,7 @@ const Upload = () => {
       const errors = [];
       errors.push(...validateModName(values.name));
       errors.push(...validateShortDescription(values.shortDescription));
+      errors.push(...validateModVersion(values.modVersion));
       errors.push(...validateThumbnail(values.thumbnail));
       errors.push(...validateModFile(values.modFile));
 

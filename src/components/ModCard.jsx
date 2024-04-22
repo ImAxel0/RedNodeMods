@@ -38,7 +38,7 @@ const ModCard = ({ mod }) => {
         <p>{mod.shortDescription}</p>
       </div>
       <div className="mod-card-btn">
-        <ButtonLink to={`/${mod.id}/${mod.name}`}>View more</ButtonLink>
+        <ButtonLink to={`/${mod.id}`}>View more</ButtonLink>
       </div>
       <div className="mod-card-stats">
         <small>
