@@ -1,7 +1,7 @@
 import { storage } from "../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
-export const uploadFile = async (file, path) => {
+export const uploadFile = async (file, path, setProgressCallback) => {
   try {
     const storageRef = ref(storage, path);
     const uploadTask = uploadBytesResumable(storageRef, file);
@@ -13,6 +13,7 @@ export const uploadFile = async (file, path) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log(file.name + "upload is" + progress + "% done");
+          setProgressCallback(progress);
           switch (snapshot.state) {
             case "paused":
               break;

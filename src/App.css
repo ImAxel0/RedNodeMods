@@ -526,6 +526,11 @@ input::file-selector-button:hover {
   background-color: hsl(142, 77%, 43%);
 }
 
+.progress-bar {
+  border: 4px solid blue;
+  border-radius: var(--modcard-radius);
+}
+
 .mod-preview {
   margin-top: 20px;
 }

@@ -14,6 +14,7 @@ import {
 const Update = ({ mod }) => {
   const { user } = UserAuth();
   const [error, setError] = useState();
+  const [progress, setProgress] = useState(0);
   const [values, setValues] = useState({
     shortDescription: "",
     description: "",
@@ -76,14 +77,16 @@ const Update = ({ mod }) => {
       if (values.thumbnail) {
         thumbnailURL = await uploadFile(
           values.thumbnail,
-          `Mods/${user.username}-${user.userId}/${mod.name}/thumbnail.png`
+          `Mods/${user.username}-${user.userId}/${mod.name}/thumbnail.png`,
+          setProgress
         );
       } else {
         thumbnailURL = mod.thumbnailURL;
       }
       const modURL = await uploadFile(
         values.modFile,
-        `Mods/${user.username}-${user.userId}/${mod.name}/${mod.name}.zip`
+        `Mods/${user.username}-${user.userId}/${mod.name}/${mod.name}.zip`,
+        setProgress
       );
 
       const modRef = doc(db, "mods", mod.id);
@@ -159,6 +162,9 @@ const Update = ({ mod }) => {
           />
         </div>
         {error && <span style={{ color: "red" }}>{error}</span>}
+        {progress > 0 && (
+          <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+        )}
         <button type="submit">Update mod</button>
       </form>
     </div>
