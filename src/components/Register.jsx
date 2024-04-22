@@ -3,6 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
+import {
+  validateEmail,
+  validatePassword,
+  validateUsername,
+} from "../handlers/authInputValidation";
 
 const Register = () => {
   const [error, setError] = useState();
@@ -15,41 +20,17 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  /* adding user to db */
   const onRegistration = async (e) => {
     e.preventDefault();
 
     try {
-      if (values.username.length < 4) {
-        setError("Username must be atleast 4 chararacters long");
-        throw new Error("Username must be atleast 4 characters long");
-      }
-      if (values.username.length > 24) {
-        setError("Username is too long");
-        throw new Error("Username is too long");
-      }
-      if (values.username.search(/^[a-z0-9]+$/i) < 0) {
-        setError("Name must contain only alphanumeric characters");
-        throw new Error("Name must contain only alphanumeric characters");
-      }
-      if (values.password.length < 6) {
-        setError("Password must be 6 or more characters");
-        throw new Error("Password must be 6 or more characters");
-      }
-      if (values.password.search(/[a-z]/i) < 0) {
-        setError("Password must contain at least one letter");
-        throw new Error("Password must contain at least one letter");
-      }
-      if (values.password.search(/[0-9]/) < 0) {
-        setError("Password must contain at least one digit");
-        throw new Error("Password must contain at least one digit");
-      }
-
-      const EMAIL_REGEX =
-        /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      if (!EMAIL_REGEX.test(values.email)) {
-        setError("Invalid email");
-        throw new Error("Invalid email");
+      const errors = [];
+      errors.push(...validateEmail(values.email));
+      errors.push(...validateUsername(values.username));
+      errors.push(...validatePassword(values.password));
+      if (errors.length > 0) {
+        setError(errors[0]);
+        throw new Error(errors[0]);
       }
 
       if (values.password === values.confirmpw) {

@@ -6,6 +6,12 @@ import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { UserAuth } from "../context/AuthContext";
 import { uploadFile } from "../handlers/fileUpload";
+import {
+  validateModFile,
+  validateModName,
+  validateShortDescription,
+  validateThumbnail,
+} from "../handlers/modInputValidation";
 
 const Upload = () => {
   const { user } = UserAuth();
@@ -21,10 +27,6 @@ const Upload = () => {
   });
 
   const navigate = useNavigate();
-
-  function bytesToMB(bytes) {
-    return bytes / (1024 * 1024);
-  }
 
   const handleInput = (e) => {
     if (e.target.name === "thumbnail") {
@@ -49,62 +51,17 @@ const Upload = () => {
 
   const onModUpload = async (e) => {
     e.preventDefault();
-    const THUMBNAIL_SIZE_LIMIT = 2;
-    const ZIP_FILE_LIMIT = 25;
 
     try {
-      if (values.name.length < 3) {
-        setError("Mod name must be atleast 3 characters long");
-        throw new Error("Mod name must be atleast 3 characters long");
-      }
-      if (values.name.length > 24) {
-        setError("Mod name is too long");
-        throw new Error("Mod name is too long");
-      }
-      if (values.name.search(/^[a-z0-9]+$/i) < 0) {
-        setError("Mod name must contain only alphanumeric characters");
-        throw new Error("Mod name must contain only alphanumeric characters");
-      }
-      const allowedPattern = /^[a-zA-Z0-9,.¡!¿?$%&()#+;'" _-]+$/;
-      if (!allowedPattern.test(values.name)) {
-        setError(
-          "Mod name must only contain letters, numbers, spaces, dashes and underscores"
-        );
-        throw new Error(
-          "Mod name must only contain letters, numbers, spaces, dashes and underscores"
-        );
-      }
-      if (values.shortDescription.length > 84) {
-        setError("Mod description preview exceed limit of 84 characters");
-        throw new Error(
-          "Mod description preview exceed limit of 84 characters"
-        );
-      }
+      const errors = [];
+      errors.push(...validateModName(values.name));
+      errors.push(...validateShortDescription(values.shortDescription));
+      errors.push(...validateThumbnail(values.thumbnail));
+      errors.push(...validateModFile(values.modFile));
 
-      const thumbExt = values.thumbnail.name.split(".").pop();
-      if (thumbExt !== "png" && thumbExt !== "jpg" && thumbExt !== "jpeg") {
-        setError("Thumbnail file must be a png or jpg file.");
-        throw new Error("Thumbnail file must be a png or jpg file.");
-      }
-      if (bytesToMB(values.thumbnail.size) > THUMBNAIL_SIZE_LIMIT) {
-        setError(
-          `Thumbnail size exceeds the limit of ${THUMBNAIL_SIZE_LIMIT}MB.`
-        );
-        throw new Error(
-          `Thumbnail size exceeds the limit of ${THUMBNAIL_SIZE_LIMIT}MB.`
-        );
-      }
-
-      const modExt = values.modFile.name.split(".").pop();
-      if (modExt !== "zip") {
-        setError("Mod file must be a zip file.");
-        throw new Error("Mod file must be a zip file.");
-      }
-      if (bytesToMB(values.modFile.size) > ZIP_FILE_LIMIT) {
-        setError(`Mod file size exceeds the limit of ${ZIP_FILE_LIMIT}MB.`);
-        throw new Error(
-          `Mod file size exceeds the limit of ${ZIP_FILE_LIMIT}MB.`
-        );
+      if (errors.length > 0) {
+        setError(errors[0]);
+        throw new Error(errors[0]);
       }
 
       let date = new Date().toLocaleDateString("it-IT");
@@ -132,7 +89,7 @@ const Upload = () => {
         isApproved: false,
         downloadCount: 0,
       });
-      navigate("/");
+      navigate("../profile");
       window.location.reload();
     } catch (error) {
       setError(error.message);
