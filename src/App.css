@@ -28,7 +28,7 @@
   background-image: linear-gradient(black, rgb(29, 29, 29)); */
   background-color: hsl(215, 28%, 17%);
   padding: 15px 25px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 10px hsl(215, 28%, 17%, 0.2);
   position: sticky;
   top: 0;
 }
@@ -106,6 +106,7 @@
   border-radius: var(--modcard-radius);
   border: 0;
   cursor: pointer;
+  width: 100%;
 }
 
 .user-panel button:hover {
@@ -334,6 +335,7 @@
   border-bottom-right-radius: var(--modcard-radius);
   box-shadow: var(--shadow);
   padding-bottom: 20px;
+  width: 50vw;
 }
 
 .mod-page-download p {
@@ -351,7 +353,6 @@
   background-color: hsl(199, 89%, 68%);
   border: 0;
   border-radius: var(--modcard-radius);
-  box-shadow: 0 1px 5px hsl(176, 100%, 45%, 0.6);
   padding: 20px 35px;
   cursor: pointer;
   transition: 0.2s;
@@ -360,6 +361,7 @@
 
 .btn-download:hover {
   background-color: hsl(199, 89%, 78%);
+  box-shadow: 0 1px 5px hsl(176, 100%, 45%, 0.6);
   animation: bounce 0.4s;
 }
 
@@ -367,7 +369,6 @@
   background-color: hsl(142, 77%, 73%);
   border: 0;
   border-radius: var(--modcard-radius);
-  box-shadow: 0 1px 5px rgb(118, 255, 175);
   padding: 20px 35px;
   cursor: pointer;
   transition: 0.2s;
@@ -376,6 +377,7 @@
 
 .btn-release:hover {
   background-color: hsl(142, 77%, 83%);
+  box-shadow: 0 1px 5px rgb(118, 255, 175);
   animation: bounce 0.4s;
 }
 
@@ -411,7 +413,7 @@
 }
 
 .login button {
-  padding: 10px 20px;
+  padding: 15px 20px;
   border: 0;
   background-color: hsl(199, 89%, 64%);
   border-radius: var(--modcard-radius);
@@ -445,18 +447,18 @@ footer {
   align-items: center;
   justify-content: space-around;
   margin-top: 50px;
-  padding: 40px 0px;
   /* background-color: rgba(0, 0, 0, 0.95); */
   background-color: hsl(215, 28%, 17%);
+  box-shadow: 0 -1px 10px hsl(215, 28%, 17%, 0.2);
 }
 
 footer p {
-  color: white;
+  color: whitesmoke;
 }
 
 .upload {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   margin-top: 100px;
 }
@@ -464,8 +466,12 @@ footer p {
 .upload-form {
   display: flex;
   flex-direction: column;
-  flex-grow: 0.2;
+  flex-grow: 0.5;
   gap: 10px;
+  background-color: hsl(0, 0%, 98%);
+  padding: 20px;
+  border-radius: var(--modcard-radius);
+  box-shadow: var(--shadow);
 }
 
 .upload-form input {
@@ -474,6 +480,7 @@ footer p {
   box-shadow: var(--shadow);
   padding: 5px;
   font-size: 1rem;
+  color: hsl(0, 0%, 30%);
 }
 
 .upload-form textarea {
@@ -489,22 +496,38 @@ footer p {
   display: flex;
   flex-direction: column;
   background-color: hsl(0, 0%, 98%);
-  padding: 10px;
-  gap: 5px;
+  gap: 5px 0;
   border-radius: var(--modcard-radius);
 }
 
 .upload-form button {
   border-radius: var(--modcard-radius);
-  border: 1px solid hsl(177, 100%, 80%);
-  background-color: hsl(177, 100%, 90%);
+  border: 0;
+  background-color: hsl(199, 89%, 64%);
   box-shadow: var(--shadow);
   padding: 15px 20px;
   cursor: pointer;
 }
 
+.upload-form button:hover {
+  background-color: hsl(199, 89%, 54%);
+}
+
+input::file-selector-button {
+  padding: 10px;
+  background-color: hsl(142, 77%, 53%);
+  border-radius: var(--modcard-radius);
+  border: 0;
+  color: white;
+  cursor: pointer;
+}
+
+input::file-selector-button:hover {
+  background-color: hsl(142, 77%, 43%);
+}
+
 .mod-preview {
-  margin-top: 100px;
+  margin-top: 20px;
 }
 
 .update {

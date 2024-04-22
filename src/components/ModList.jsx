@@ -94,7 +94,7 @@ const ModList = ({ mods }) => {
           (mod, index) =>
             index < 8 * currPage &&
             index >= 8 * currPage - 8 &&
-            (mod.isApproved || user.canApprove) &&
+            (mod.isApproved || user?.canApprove) &&
             mod.name.toLowerCase().includes(searchValue.toLowerCase()) && (
               <ModCard key={mod.id} mod={mod} />
             )

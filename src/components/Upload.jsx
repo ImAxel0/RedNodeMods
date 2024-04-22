@@ -178,6 +178,7 @@ const Upload = () => {
               name: values.name,
               shortDescription: values.shortDescription,
               thumbnailURL: thumbnailPrev,
+              modVersion: values.modVersion,
             }}
           />
         </div>
@@ -190,6 +191,7 @@ const Upload = () => {
             shortDescription: values.shortDescription,
             description: values.description,
             thumbnailURL: thumbnailPrev,
+            modVersion: values.modVersion,
           }}
         />
       </div>

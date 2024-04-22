@@ -78,12 +78,12 @@ const ModPage = ({ mod }) => {
                 Release new version
               </button>
             )}
-            {!mod.isApproved && user.canApprove && (
+            {!mod.isApproved && user?.canApprove && (
               <button className="btn-release" onClick={approveMod}>
                 Approve mod
               </button>
             )}
-            {mod.isApproved && user.canApprove && (
+            {mod.isApproved && user?.canApprove && (
               <button
                 style={{ backgroundColor: "red" }}
                 className="btn-release"
