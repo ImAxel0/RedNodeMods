@@ -45,7 +45,7 @@ const ModCard = ({ mod }) => {
           <FontAwesomeIcon transform="shrink-4" icon="fa-regular fa-clock" />
           {mod.uploadDate}
         </small>
-        <p>
+        <p style={{ color: "green" }}>
           <FontAwesomeIcon
             transform="shrink-4 down-0.5"
             icon="fa-regular fa-circle-down"

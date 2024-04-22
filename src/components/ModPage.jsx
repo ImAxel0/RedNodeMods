@@ -25,6 +25,28 @@ const ModPage = ({ mod }) => {
     incDownloadCount();
   };
 
+  const approveMod = async () => {
+    const modRef = doc(db, "mods", mod.id);
+    try {
+      await updateDoc(modRef, {
+        isApproved: true,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const unapproveMod = async () => {
+    const modRef = doc(db, "mods", mod.id);
+    try {
+      await updateDoc(modRef, {
+        isApproved: false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="mod-page">
       <h1>
@@ -54,6 +76,20 @@ const ModPage = ({ mod }) => {
                 onClick={() => setShowUpdateForm(!showUpdateForm)}
               >
                 Release new version
+              </button>
+            )}
+            {!mod.isApproved && user.canApprove && (
+              <button className="btn-release" onClick={approveMod}>
+                Approve mod
+              </button>
+            )}
+            {mod.isApproved && user.canApprove && (
+              <button
+                style={{ backgroundColor: "red" }}
+                className="btn-release"
+                onClick={unapproveMod}
+              >
+                Unapprove mod
               </button>
             )}
           </div>

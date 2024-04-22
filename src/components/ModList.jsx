@@ -6,8 +6,10 @@ import "../App.css";
 import { db } from "../firebase";
 import { collection, getCountFromServer } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { UserAuth } from "../context/AuthContext";
 
 const ModList = ({ mods }) => {
+  const { user } = UserAuth();
   const [users, setUsers] = useState();
   const [downloadCount, setDownloadCount] = useState(0);
   const [searchValue, setSearchValue] = useState("");
@@ -92,7 +94,7 @@ const ModList = ({ mods }) => {
           (mod, index) =>
             index < 8 * currPage &&
             index >= 8 * currPage - 8 &&
-            mod.isApproved &&
+            (mod.isApproved || user.canApprove) &&
             mod.name.toLowerCase().includes(searchValue.toLowerCase()) && (
               <ModCard key={mod.id} mod={mod} />
             )
